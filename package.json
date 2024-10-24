@@ -1,7 +1,7 @@
 {
-  "name": "nodejs-data-app",
+  "name": "nodejs-app",
   "version": "1.0.0",
-  "description": "Node.js app that stores user data",
+  "description": "A simple Node.js app",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
