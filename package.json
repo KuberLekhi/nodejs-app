@@ -1,12 +1,13 @@
 {
-  "name": "nodejs-app",
+  "name": "nodejs-data-app",
   "version": "1.0.0",
-  "description": "A simple Node.js app to generate and store data",
-  "main": "index.js",
+  "description": "Node.js app that stores user data",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0"
   }
 }
