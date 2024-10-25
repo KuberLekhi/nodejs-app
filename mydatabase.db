@@ -1,0 +1,14 @@
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./mydatabase.db');
+
+db.run(`CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY, temperature REAL, humidity REAL);`);
+
+app.post('/data', (req, res) => {
+    const { temperature, humidity } = req.body;
+    db.run(`INSERT INTO data (temperature, humidity) VALUES (?, ?)`, [temperature, humidity], function (err) {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.send("Data stored successfully!");
+    });
+});
