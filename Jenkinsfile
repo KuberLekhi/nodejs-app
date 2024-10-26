@@ -1,19 +1,28 @@
 pipeline {
     agent any
     stages {
-        stage('Setup Node Environment') {
+        stage('Checkout') {
             steps {
-                script {
-                    // Load NVM and use a specific Node.js version if needed
-                    sh '''
-                    export NVM_DIR="$HOME/.nvm"
-                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-                    nvm install 14
-                    nvm use 14
-                    '''
-                }
+                // Clone the repository
+                git 'https://github.com/KuberLekhi/nodejs-app'
             }
         }
-        // Other stages here
+        stage('Install Node.js and Dependencies') {
+            steps {
+                // Install Node.js using apt if not already installed
+                sh '''
+                    if ! command -v node &> /dev/null; then
+                        curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+                        sudo apt-get install -y nodejs
+                    fi
+                    npm install
+                '''
+            }
+        }
+        stage('Run App') {
+            steps {
+                sh 'npm start'
+            }
+        }
     }
 }
