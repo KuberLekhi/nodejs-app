@@ -1,32 +1,19 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Setup Node Environment') {
             steps {
-                git 'https://github.com/KuberLekhi/nodejs-app'
+                script {
+                    // Load NVM and use a specific Node.js version if needed
+                    sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                    nvm install 14
+                    nvm use 14
+                    '''
+                }
             }
         }
-        stage('Install Dependencies') {
-            steps {
-                sh '''
-                # Install nvm (Node Version Manager)
-                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-                export NVM_DIR="$HOME/.nvm"
-                [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # Load nvm
-
-                # Install Node.js via nvm
-                nvm install 14
-                nvm use 14
-
-                # Install dependencies
-                npm install
-                '''
-            }
-        }
-        stage('Run App') {
-            steps {
-                sh 'node server.js'
-            }
-        }
+        // Other stages here
     }
 }
