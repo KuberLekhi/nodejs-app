@@ -1,32 +1,31 @@
 pipeline {
     agent any
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/KuberLekhi/nodejs-app.git'
+                git 'https://github.com/KuberLekhi/nodejs-app'
             }
         }
-
         stage('Install Dependencies') {
             steps {
-                script {
-                    // Install Node.js and npm if not already installed
-                    sh 'curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -'
-                    sh 'sudo apt-get install -y nodejs'
+                sh '''
+                # Install nvm (Node Version Manager)
+                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+                export NVM_DIR="$HOME/.nvm"
+                [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # Load nvm
 
-                    // Install application dependencies
-                    sh 'npm install'
-                }
+                # Install Node.js via nvm
+                nvm install 14
+                nvm use 14
+
+                # Install dependencies
+                npm install
+                '''
             }
         }
-
         stage('Run App') {
             steps {
-                script {
-                    // Start the application
-                    sh 'nohup npm start &'
-                }
+                sh 'node server.js'
             }
         }
     }
